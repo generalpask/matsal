@@ -5,6 +5,7 @@
 # skip to the Window class for all the important code
 #
 #
+
 Dir.chdir(File.dirname(__FILE__)) #File location fix
 
 begin
@@ -29,7 +30,8 @@ $backColor = 0xff_38003a 		    #background color
 $screenWidth = 1366 			    #screen resolution
 $screenHeight = 768
 $fullscreen = true	 			    #fullscreen toggle
-$vipIDs = ["00000000ee", "0f03a9319c", "sod15046", "sodjebi", "sodjepr", "sod15030", "sod15095", "sod15019", "sod15023", "sod17049", "sod15045", "sod17042", "sod17020", "0f03b74a8d"]
+$vipIDs = ["00000000ee", "0f03a9319c", "sod15046", "sodjebi", "sodjepr", "sod15030", "sod15095", "sod15019", "sod15023", "sod15045", "sod17042", "sod17020", "0f03b74a8d"]
+$adminIDs = ["sod17049", "0f03b67dc4"]
 # ^ vip ids for fancy colors ;)
 $logo = Gosu::Image.new("logo.jpg") #ITG logo
 
@@ -213,7 +215,7 @@ class Window < Gosu::Window
 			#gets the text and clears the input field
 			input = @input.text.chomp.downcase
 			@input.text = ""
-			#for manual shutoff, enter partybussen on a keyboard and press enter, still saves
+			#for manual shutoff, enter end on a keyboard and press enter, still saves
 			if input == "end"
 				save
 				close
@@ -228,12 +230,14 @@ class Window < Gosu::Window
 				name = @database[input]
 				#records the id if it is unknown
 				if name == "Okänd"
-					File.open("Okända.txt", "a") {|f| f.puts input}
+                    File.open("Okända.txt", "a") {|f| f.puts input}
+                if $adminIDs.include?(input)
+                    color = 0xff_ff0800 
 				else
 					File.open("temp.txt", "a") {|f| f.puts input}
-				end
+                end
+            end
 				Card.new(name, $vipIDs.include?(input))
-				#adds id to the temp file
 			end
 		end
 	end
