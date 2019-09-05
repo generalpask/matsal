@@ -1,4 +1,4 @@
-﻿#
+#
 #
 # Created by Martin Larsson 15_tek_cs
 # martin.99.larsson@telia.com
@@ -30,8 +30,48 @@ $backColor = 0xff_38003a 		    #background color
 $screenWidth = 1366 			    #screen resolution
 $screenHeight = 768
 $fullscreen = true	 			    #fullscreen toggle
-$vipIDs = ["00000000ee", "0f03a9319c", "sod15046", "sodjebi", "sodjepr", "sod15030", "sod15095", "sod15019", "sod15023", "sod15045", "sod17042", "sod17020", "0f03b74a8d"]
-$adminIDs = ["sod17049", "0f03b67dc4"]
+$vipIDs = [ "0f03a9319c", "sod15046", "sodjebi", "sodjepr", "sod15030", "sod15095", "sod15019", "sod15023", "sod15045", "sod17042", "sod17020", "0f03b74a8d", "0f03c06cfb"]
+$adminIDs = [ "00000000ee","sod17049", "0f03c06cfb"]
+$teacherIDs = [
+"sodanri",
+"sodata",
+"sodbika",
+"sodboal",
+"sodedpa",
+"sodered",
+"sodelg",
+"sodjebi",
+"sodjose",
+"sodjvh",
+"sodlica",
+"sodmach",
+"sodmiob",
+"sodniet",
+"sodpemo",
+"sodsukl",
+"sodpefr",
+"sodnial",
+"sodjokn",
+"sodbojo",
+"sodheti",
+"sodbisa",
+"sodrofe",
+"sodakpe",
+"sodjobj",
+"sodcalu",
+"sodanbj",
+"sodmini",
+"sodrosv",
+"sodlier",
+"sodanse",
+"sodaxol",
+"0f03c06baa",
+"sodchmu",
+"sodevli",
+"rean",
+"010c96bebe"
+] #Teachers tags
+
 # ^ vip ids for fancy colors ;)
 $logo = Gosu::Image.new("logo.jpg") #ITG logo
 
@@ -41,11 +81,15 @@ class Card
 	def initialize(text, color = false)
 		$grafixlist << self
 		@text = text
-		if color
-			@color = 0xff_ff00ff
+		if (input ==$vipIDs.include?(input))  # org: color
+            @color = 0xff_ff00ff #Vip Colors
+        elsif $adminIDs.include?(input)
+            @color = 0xff_ff9a36 #Admin colors
+					elsif $teacherIDs.include?(input)
+						@color = 0xff_efbfff #teacher colors
 		else
 			hue = Time.now.yday
-			@color = Gosu::Color.from_hsv([0, hue, 360].sort[1], 1, 1)
+			@color = 0xff_d4ffd7 #Student colors
 		end
 		@y = @realy = -30
 		@x = 40 + $logo.width
@@ -231,16 +275,14 @@ class Window < Gosu::Window
 				#records the id if it is unknown
 				if name == "Okänd"
                     File.open("Okända.txt", "a") {|f| f.puts input}
-                if $adminIDs.include?(input)
-                    color = 0xff_ff0800 
 				else
 					File.open("temp.txt", "a") {|f| f.puts input}
                 end
             end
-				Card.new(name, $vipIDs.include?(input))
-			end
+			Card.new(name, $vipIDs.include?(input) || $adminIDs.include?(input) )
 		end
 	end
 end
+
 
 Window.new.show
